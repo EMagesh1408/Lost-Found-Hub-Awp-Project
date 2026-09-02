@@ -1,0 +1,11 @@
+node_modules/
+.env
+npm-debug.log*
+.DS_Store
+*.log
+dist/
+coverage/
+
+# Uploaded images (keep the folder, ignore its contents)
+backend/uploads/*
+!backend/uploads/.gitkeep

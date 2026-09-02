@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lost & Found Hub — Campus Recovery Network</title>
+<meta name="description" content="A centralized platform for college students to report and recover lost belongings." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <div class="navbar__inner">
+    <a href="#top" class="brand">
+      <span class="brand__mark" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <circle cx="13" cy="13" r="12" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M13 7v6l4 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand__text">Lost<em>&amp;</em>Found <strong>Hub</strong></span>
+    </a>
+
+    <nav class="navlinks" id="navlinks">
+      <a href="#browse">Browse Items</a>
+      <a href="#how">How it Works</a>
+      <a href="#stats">Campus Stats</a>
+    </nav>
+
+    <div class="navbar__actions">
+      <button class="btn btn--ghost" id="openLostBtn">Report Lost</button>
+      <button class="btn btn--primary" id="openFoundBtn">Report Found</button>
+    </div>
+
+    <button class="navbar__burger" id="burgerBtn" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero__inner">
+    <div class="hero__copy">
+      <p class="hero__eyebrow">For every student on campus</p>
+      <h1 class="hero__title">Missing something?<br/>Someone may have<br/>already found it.</h1>
+      <p class="hero__sub">One shared board for everything students lose and find — wallets, ID cards, laptops, keys, hoodies — searchable in seconds, instead of scattered WhatsApp groups and notice-board flyers.</p>
+
+      <form class="hero__search" id="heroSearchForm" role="search">
+        <svg class="hero__search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M12.5 12.5L16 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="text" id="heroSearchInput" placeholder="Search “blue backpack”, “ID card”, “library”…" autocomplete="off" />
+        <button type="submit" class="btn btn--primary hero__search-btn">Search</button>
+      </form>
+
+      <div class="hero__cta-row">
+        <button class="btn btn--outline-light" id="heroReportBtn">Report an item →</button>
+        <a href="#browse" class="hero__link">or browse everything found so far</a>
+      </div>
+    </div>
+
+    <div class="hero__board" aria-hidden="false">
+      <div class="pin-card pin-card--main">
+        <span class="pin-dot"></span>
+        <p class="pin-card__label">Just reported</p>
+        <p class="pin-card__title" id="pinLatestTitle">Loading recent activity…</p>
+        <p class="pin-card__meta" id="pinLatestMeta">&nbsp;</p>
+      </div>
+      <div class="stat-strip" id="statStrip">
+        <div class="stat-strip__item">
+          <span class="stat-strip__num" id="statLost">–</span>
+          <span class="stat-strip__label">Lost</span>
+        </div>
+        <div class="stat-strip__item">
+          <span class="stat-strip__num" id="statFound">–</span>
+          <span class="stat-strip__label">Found</span>
+        </div>
+        <div class="stat-strip__item">
+          <span class="stat-strip__num" id="statClaimed">–</span>
+          <span class="stat-strip__label">Reunited</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="how" id="how">
+  <div class="how__inner">
+    <h2 class="section-heading">How the hub works</h2>
+    <div class="how__grid">
+      <div class="how__step">
+        <span class="how__step-index">1</span>
+        <h3>Report it</h3>
+        <p>Lost something, or found something that isn't yours? File a quick report with a description, category, and where it happened.</p>
+      </div>
+      <div class="how__step">
+        <span class="how__step-index">2</span>
+        <h3>Search &amp; match</h3>
+        <p>Browse or search the live board, filter by category or status, and open any listing to see full details and contact info.</p>
+      </div>
+      <div class="how__step">
+        <span class="how__step-index">3</span>
+        <h3>Claim it back</h3>
+        <p>Recognize your item? Submit a claim right from the listing. The status updates instantly so nobody else claims it too.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BROWSE / LISTINGS ============ -->
+<section class="browse" id="browse">
+  <div class="browse__inner">
+    <div class="browse__head">
+      <h2 class="section-heading">Browse the board</h2>
+      <p class="browse__sub">Every item currently reported by students and staff, updated live.</p>
+    </div>
+
+    <div class="filters">
+      <div class="filters__row">
+        <div class="filters__search">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M12.5 12.5L16 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <input type="text" id="searchInput" placeholder="Search items by name, description or location…" />
+        </div>
+        <select id="sortSelect" class="filters__select">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="az">A–Z</option>
+        </select>
+      </div>
+
+      <div class="filters__chips" id="statusChips">
+        <button class="chip chip--active" data-status="All">All statuses</button>
+        <button class="chip" data-status="Lost">Lost</button>
+        <button class="chip" data-status="Found">Found</button>
+        <button class="chip" data-status="Claimed">Claimed</button>
+      </div>
+
+      <div class="filters__chips filters__chips--category" id="categoryChips">
+        <button class="chip chip--cat chip--active" data-category="All">All categories</button>
+        <button class="chip chip--cat" data-category="Electronics">Electronics</button>
+        <button class="chip chip--cat" data-category="Books & Stationery">Books &amp; Stationery</button>
+        <button class="chip chip--cat" data-category="ID Cards & Documents">ID &amp; Documents</button>
+        <button class="chip chip--cat" data-category="Clothing & Accessories">Clothing</button>
+        <button class="chip chip--cat" data-category="Bags & Backpacks">Bags</button>
+        <button class="chip chip--cat" data-category="Keys">Keys</button>
+        <button class="chip chip--cat" data-category="Sports Equipment">Sports</button>
+        <button class="chip chip--cat" data-category="Other">Other</button>
+      </div>
+    </div>
+
+    <div class="results-bar">
+      <p id="resultsCount">Loading items…</p>
+    </div>
+
+    <div class="grid" id="itemsGrid" aria-live="polite">
+      <!-- item cards injected by JS -->
+    </div>
+
+    <div class="empty-state" id="emptyState" hidden>
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="26" stroke="currentColor" stroke-width="1.4"/><path d="M18 34c2.5-4 5-6 10-6s7.5 2 10 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="21" cy="23" r="1.6" fill="currentColor"/><circle cx="35" cy="23" r="1.6" fill="currentColor"/></svg>
+      <h3>Nothing matches yet</h3>
+      <p>Try a different keyword or clear your filters — or be the first to report this item.</p>
+      <button class="btn btn--primary" id="emptyReportBtn">Report an item</button>
+    </div>
+
+    <div class="skeleton-grid" id="skeletonGrid">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAMPUS STATS ============ -->
+<section class="stats" id="stats">
+  <div class="stats__inner">
+    <h2 class="section-heading section-heading--light">The board, in numbers</h2>
+    <div class="stats__grid">
+      <div class="stats__card">
+        <span class="stats__num" id="bigStatTotal">0</span>
+        <span class="stats__label">Items reported</span>
+      </div>
+      <div class="stats__card">
+        <span class="stats__num" id="bigStatLost">0</span>
+        <span class="stats__label">Currently lost</span>
+      </div>
+      <div class="stats__card">
+        <span class="stats__num" id="bigStatFound">0</span>
+        <span class="stats__label">Waiting to be claimed</span>
+      </div>
+      <div class="stats__card">
+        <span class="stats__num" id="bigStatClaimed">0</span>
+        <span class="stats__label">Reunited with owners</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <span class="brand__text brand__text--footer">Lost<em>&amp;</em>Found <strong>Hub</strong></span>
+      <p>Built for students, by students. Every report helps someone else get their things back.</p>
+    </div>
+    <div class="footer__links">
+      <div>
+        <h4>Platform</h4>
+        <a href="#browse">Browse items</a>
+        <a href="#how">How it works</a>
+        <a href="#stats">Campus stats</a>
+      </div>
+      <div>
+        <h4>Report</h4>
+        <a href="#" id="footerLostLink">Report lost item</a>
+        <a href="#" id="footerFoundLink">Report found item</a>
+      </div>
+    </div>
+  </div>
+  <p class="footer__bottom">© <span id="year"></span> Lost &amp; Found Hub — a student-built campus utility.</p>
+</footer>
+
+<!-- ============ REPORT ITEM MODAL ============ -->
+<div class="modal-overlay" id="reportOverlay">
+  <div class="modal modal--form" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle">
+    <button class="modal__close" id="closeReportModal" aria-label="Close">&times;</button>
+    <h2 class="modal__title" id="reportModalTitle">Report an item</h2>
+    <p class="modal__subtitle">Fill in as much detail as you can — it makes matching much faster.</p>
+
+    <form id="reportForm" novalidate>
+      <div class="form-row form-row--status">
+        <label class="radio-pill">
+          <input type="radio" name="status" value="Lost" checked />
+          <span>I lost something</span>
+        </label>
+        <label class="radio-pill">
+          <input type="radio" name="status" value="Found" />
+          <span>I found something</span>
+        </label>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="f-title">Item title *</label>
+          <input type="text" id="f-title" name="title" placeholder="e.g., Black Dell laptop" maxlength="100" />
+          <span class="field__error" data-for="title"></span>
+        </div>
+
+        <div class="field">
+          <label for="f-category">Category *</label>
+          <select id="f-category" name="category">
+            <option value="">Select a category</option>
+            <option>Electronics</option>
+            <option>Books & Stationery</option>
+            <option>ID Cards & Documents</option>
+            <option>Clothing & Accessories</option>
+            <option>Bags & Backpacks</option>
+            <option>Keys</option>
+            <option>Sports Equipment</option>
+            <option>Other</option>
+          </select>
+          <span class="field__error" data-for="category"></span>
+        </div>
+
+        <div class="field field--full">
+          <label for="f-description">Description *</label>
+          <textarea id="f-description" name="description" rows="3" maxlength="1000" placeholder="Color, brand, distinguishing marks, contents, etc."></textarea>
+          <span class="field__error" data-for="description"></span>
+        </div>
+
+        <div class="field">
+          <label for="f-location">Location *</label>
+          <input type="text" id="f-location" name="location" placeholder="e.g., Central Library, 2nd floor" maxlength="150" />
+          <span class="field__error" data-for="location"></span>
+        </div>
+
+        <div class="field">
+          <label for="f-date">Date *</label>
+          <input type="date" id="f-date" name="date" />
+          <span class="field__error" data-for="date"></span>
+        </div>
+
+        <div class="field">
+          <label for="f-name">Your name *</label>
+          <input type="text" id="f-name" name="reporterName" placeholder="Full name" maxlength="80" />
+          <span class="field__error" data-for="reporterName"></span>
+        </div>
+
+        <div class="field">
+          <label for="f-email">Your email *</label>
+          <input type="email" id="f-email" name="reporterEmail" placeholder="you@college.edu" />
+          <span class="field__error" data-for="reporterEmail"></span>
+        </div>
+
+        <div class="field">
+          <label for="f-phone">Phone (optional)</label>
+          <input type="tel" id="f-phone" name="reporterPhone" placeholder="10-digit number" />
+          <span class="field__error" data-for="reporterPhone"></span>
+        </div>
+
+        <div class="field field--full">
+          <label for="f-image-input">Photo (optional)</label>
+          <div class="uploader" id="uploader">
+            <input type="file" id="f-image-input" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+
+            <div class="uploader__dropzone" id="uploaderDropzone" tabindex="0" role="button" aria-label="Upload a photo">
+              <span class="uploader__icon">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                  <rect x="3" y="6" width="24" height="19" rx="4" stroke="currentColor" stroke-width="1.6"/>
+                  <circle cx="10.5" cy="13" r="2.1" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M3 20.5 9 15l4 3.5 5-5 9 8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+                  <circle cx="23" cy="5" r="5" fill="var(--gold)"/>
+                  <path d="M23 3v4M21 5h4" stroke="var(--ink-2)" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <p class="uploader__title">Drop a photo here, or <span>browse</span></p>
+              <p class="uploader__hint">JPG, PNG, WEBP or GIF · up to 5MB</p>
+            </div>
+
+            <div class="uploader__preview" id="uploaderPreview" hidden>
+              <div class="uploader__preview-image" id="uploaderPreviewImage">
+                <img id="uploaderPreviewImg" alt="Selected photo preview" />
+
+                <div class="uploader__overlay" id="uploaderOverlay">
+                  <div class="uploader__ring" id="uploaderRing" style="--pct:0">
+                    <div class="uploader__ring-inner"><span id="uploaderRingText">0%</span></div>
+                  </div>
+                </div>
+
+                <div class="uploader__hover-hint">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 15.5V18h2.5l9-9-2.5-2.5-9 9Zm11.5-11 2.5 2.5 1.9-1.9a1.5 1.5 0 0 0 0-2.1l-.4-.4a1.5 1.5 0 0 0-2.1 0l-1.9 1.9Z" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  <span>Change photo</span>
+                </div>
+
+                <span class="uploader__badge" id="uploaderBadge" hidden>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 5 8.7l4.5-5.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Uploaded
+                </span>
+
+                <button type="button" class="uploader__remove-btn" id="uploaderRemoveBtn" aria-label="Remove photo" title="Remove photo">
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 4h9M6 4V2.5h3V4M4.5 4l.6 8.5a1 1 0 0 0 1 .95h3.8a1 1 0 0 0 1-.95L11.5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+
+              <div class="uploader__meta">
+                <span class="uploader__filename" id="uploaderFileName"></span>
+                <span class="uploader__filesize" id="uploaderFileSize"></span>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="f-image" name="imageUrl" />
+          <span class="field__error" data-for="imageUrl"></span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--block" id="reportSubmitBtn">
+        <span class="btn__label">Submit report</span>
+        <span class="btn__spinner" hidden></span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ ITEM DETAILS MODAL ============ -->
+<div class="modal-overlay" id="detailsOverlay">
+  <div class="modal modal--details" role="dialog" aria-modal="true" aria-labelledby="detailsTitle">
+    <button class="modal__close" id="closeDetailsModal" aria-label="Close">&times;</button>
+    <div id="detailsContent"><!-- injected --></div>
+  </div>
+</div>
+
+<!-- ============ CLAIM MODAL ============ -->
+<div class="modal-overlay" id="claimOverlay">
+  <div class="modal modal--form modal--claim" role="dialog" aria-modal="true" aria-labelledby="claimModalTitle">
+    <button class="modal__close" id="closeClaimModal" aria-label="Close">&times;</button>
+    <h2 class="modal__title" id="claimModalTitle">Claim this item</h2>
+    <p class="modal__subtitle" id="claimModalSubtitle">Tell us who you are so the reporter can hand it back safely.</p>
+
+    <form id="claimForm" novalidate>
+      <div class="form-grid">
+        <div class="field">
+          <label for="c-name">Your name *</label>
+          <input type="text" id="c-name" name="name" placeholder="Full name" maxlength="80" />
+          <span class="field__error" data-for="name"></span>
+        </div>
+        <div class="field">
+          <label for="c-email">Your email *</label>
+          <input type="email" id="c-email" name="email" placeholder="you@college.edu" />
+          <span class="field__error" data-for="email"></span>
+        </div>
+        <div class="field field--full">
+          <label for="c-note">Proof / note (optional)</label>
+          <textarea id="c-note" name="note" rows="3" maxlength="500" placeholder="How you can verify it's yours, or where you'll collect it from."></textarea>
+        </div>
+      </div>
+      <input type="hidden" id="claimItemId" />
+      <button type="submit" class="btn btn--primary btn--block" id="claimSubmitBtn">
+        <span class="btn__label">Confirm claim</span>
+        <span class="btn__spinner" hidden></span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<!-- ============ MAGESH AI CHATBOT ============ -->
+<div class="magesh" id="magesh">
+  <button class="magesh__fab" id="mageshFab" aria-label="Open Magesh AI assistant">
+    <span class="magesh__fab-ring"></span>
+    <span class="magesh__fab-glow"></span>
+    <svg class="magesh__fab-icon" width="30" height="30" viewBox="0 0 32 32" fill="none">
+      <defs>
+        <linearGradient id="mageshFace" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#2B3A63"/>
+          <stop offset="1" stop-color="#16223F"/>
+        </linearGradient>
+      </defs>
+      <path d="M16 4.5 17.4 8l3.6 1.3-3.6 1.3L16 14l-1.4-3.4L11 9.3l3.6-1.3L16 4.5Z" fill="#F1D89A"/>
+      <rect x="6" y="13" width="20" height="14" rx="6" fill="url(#mageshFace)"/>
+      <circle cx="12.5" cy="20" r="2.1" fill="#F6F4EE"/>
+      <circle cx="19.5" cy="20" r="2.1" fill="#F6F4EE"/>
+      <path d="M12.5 24c1 .9 2 1.3 3.5 1.3s2.5-.4 3.5-1.3" stroke="#F6F4EE" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M4.5 18.5H6M26 18.5h1.5" stroke="#F1D89A" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <span class="magesh__dot" id="mageshDot"></span>
+  </button>
+
+  <div class="magesh__panel" id="mageshPanel">
+    <div class="magesh__header">
+      <div class="magesh__header-info">
+        <span class="magesh__avatar">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4.5 17.4 8l3.6 1.3-3.6 1.3L16 14l-1.4-3.4L11 9.3l3.6-1.3L16 4.5Z" fill="#16223F"/>
+            <rect x="6" y="13" width="20" height="14" rx="6" fill="#16223F"/>
+            <circle cx="12.5" cy="20" r="2" fill="#F1D89A"/>
+            <circle cx="19.5" cy="20" r="2" fill="#F1D89A"/>
+            <path d="M12.5 24c1 .9 2 1.3 3.5 1.3s2.5-.4 3.5-1.3" stroke="#F1D89A" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <div>
+          <p class="magesh__name">Magesh AI</p>
+          <p class="magesh__status"><span class="dot-live"></span>Campus assistant</p>
+        </div>
+      </div>
+      <button class="magesh__minimize" id="mageshClose" aria-label="Minimize chat">&minus;</button>
+    </div>
+
+    <div class="magesh__body" id="mageshBody">
+      <div class="magesh__msg magesh__msg--bot">
+        Hi, I'm <strong>Magesh AI</strong> 👋 I can help you search listings, explain how reporting or claiming works, or point you in the right direction. What do you need?
+      </div>
+      <div class="magesh__suggestions">
+        <button class="magesh__suggestion" data-msg="How do I report a lost item?">How do I report a lost item?</button>
+        <button class="magesh__suggestion" data-msg="How do I claim an item I found is mine?">How do I claim my item?</button>
+        <button class="magesh__suggestion" data-msg="Has anyone found a black wallet recently?">Any black wallets found?</button>
+      </div>
+    </div>
+
+    <form class="magesh__composer" id="mageshForm">
+      <input type="text" id="mageshInput" placeholder="Ask Magesh AI anything…" autocomplete="off" maxlength="500" />
+      <button type="submit" class="magesh__send" aria-label="Send message">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 9l14-6-5 14-2.5-5.5L2 9Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/chatbot.js"></script>
+</body>
+</html>
