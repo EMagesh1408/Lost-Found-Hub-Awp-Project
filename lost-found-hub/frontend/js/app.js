@@ -50,8 +50,22 @@
     return `${days}d ago`;
   }
 
-  function categoryIcon() {
-    return `<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="5" y="9" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M10 9V7a4 4 0 0 1 8 0v2" stroke="currentColor" stroke-width="1.4"/></svg>`;
+  function categoryIcon(size = 28) {
+    return `<svg width="${size}" height="${size}" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="5" y="9" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M10 9V7a4 4 0 0 1 8 0v2" stroke="currentColor" stroke-width="1.4"/></svg>`;
+  }
+
+  /**
+   * Builds the markup for an item image.
+   * The placeholder icon is ALWAYS rendered underneath; the <img> is layered on
+   * top of it. If the image fails to load it simply removes itself and the icon
+   * shows through. This avoids injecting SVG markup (which contains double
+   * quotes) into an onerror="" attribute, which used to break the HTML parser
+   * and leak a stray  "/>  onto the card.
+   */
+  function mediaMarkup(item, size = 28) {
+    const fallback = `<span class="media__fallback">${categoryIcon(size)}</span>`;
+    if (!item.imageUrl) return fallback;
+    return `${fallback}<img class="media__img" src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async" onerror="this.remove()"/>`;
   }
 
   // ---------- Toasts ----------
@@ -121,9 +135,7 @@
 
       card.innerHTML = `
         <div class="item-card__media">
-          ${item.imageUrl
-            ? `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.parentElement.innerHTML='${categoryIcon()}'"/>`
-            : categoryIcon()}
+          ${mediaMarkup(item, 28)}
           <span class="badge badge--${item.status}">${item.status}</span>
         </div>
         <div class="item-card__body">
@@ -549,7 +561,7 @@
 
     detailsContent.innerHTML = `
       <div class="details__media">
-        ${item.imageUrl ? `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" onerror="this.parentElement.innerHTML='${categoryIcon()}'"/>` : categoryIcon()}
+        ${mediaMarkup(item, 40)}
       </div>
       <div class="details__top">
         <h2 class="details__title">${escapeHtml(item.title)}</h2>

@@ -271,15 +271,30 @@ input, select, textarea { font-family: inherit; }
 @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 .item-card__media {
-  height: 150px; background: var(--paper-2);
+  aspect-ratio: 16 / 10; width: 100%; background: var(--paper-2);
   display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted); position: relative;
+  color: var(--text-muted); position: relative; overflow: hidden;
 }
-.item-card__media img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Shared media layers (used by cards and the details modal) */
+.media__fallback {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); opacity: 0.55;
+}
+.media__img {
+  position: absolute; inset: 0; z-index: 2;
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  background: var(--paper-2);
+  transition: transform 0.35s ease;
+}
+.item-card:hover .media__img { transform: scale(1.04); }
 .badge {
-  position: absolute; top: 12px; left: 12px;
+  position: absolute; top: 12px; left: 12px; z-index: 3;
   font-size: 0.72rem; font-weight: 700; padding: 5px 12px; border-radius: 999px;
   text-transform: uppercase; letter-spacing: 0.03em;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 10px -4px rgba(13, 23, 48, 0.35);
 }
 .badge--Lost { background: var(--rust-bg); color: var(--rust); }
 .badge--Found { background: var(--moss-bg); color: var(--moss); }
@@ -287,9 +302,21 @@ input, select, textarea { font-family: inherit; }
 
 .item-card__body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .item-card__cat { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gold); }
-.item-card__title { font-family: var(--font-display); font-size: 1.08rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
-.item-card__desc { font-size: 0.87rem; color: var(--text-muted); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-.item-card__meta { margin-top: auto; padding-top: 8px; display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); border-top: 1px dashed var(--border); }
+.item-card__title {
+  font-family: var(--font-display); font-size: 1.08rem; font-weight: 600; color: var(--ink); line-height: 1.3;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-word;
+}
+.item-card__desc {
+  font-size: 0.87rem; color: var(--text-muted); line-height: 1.5; min-height: 2.6em;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-word;
+}
+.item-card__meta {
+  margin-top: auto; padding-top: 10px; display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; font-size: 0.78rem; color: var(--text-muted); border-top: 1px dashed var(--border);
+}
+.item-card__meta span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item-card__meta span:last-child { flex-shrink: 0; }
+.item-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
 /* Skeleton loading */
 .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin-top: 4px; }
@@ -466,8 +493,7 @@ input, select, textarea { font-family: inherit; }
 .uploader__filesize { color: var(--text-muted); flex-shrink: 0; }
 
 /* Details modal content */
-.details__media { width: 100%; height: 220px; border-radius: var(--radius-md); background: var(--paper-2); overflow: hidden; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
-.details__media img { width: 100%; height: 100%; object-fit: cover; }
+.details__media { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-md); background: var(--paper-2); overflow: hidden; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
 .details__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 8px; padding-right: 30px; }
 .details__title { font-size: 1.4rem; color: var(--ink); }
 .details__cat { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gold); margin-bottom: 14px; }
