@@ -645,3 +645,23 @@ input, select, textarea { font-family: inherit; }
   .modal { padding: 24px; }
   .details__grid { grid-template-columns: 1fr; }
 }
+
+
+/* =========================================================
+   TEAM AVENGERS FOOTER
+   Isolated styles only
+   ========================================================= */
+.avengers-footer-team { min-width: 360px; }
+.avengers-footer-team h4 { margin-bottom: 14px; }
+.avengers-footer-leader { display:flex; align-items:center; gap:9px; margin-bottom:15px; }
+.avengers-footer-crown { font-size:18px; }
+.avengers-footer-leader strong { display:block; color:var(--gold-light); font-size:13px; }
+.avengers-footer-leader small { display:block; margin-top:2px; font-size:10px; opacity:.65; }
+.avengers-footer-members { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; }
+.avengers-footer-member { text-align:center; }
+.avengers-footer-member span { width:34px; height:34px; margin:0 auto 5px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:var(--ink-soft); border:1px solid rgba(241,216,154,.35); color:var(--gold-light); font-size:10px; font-weight:700; transition:transform .25s ease, box-shadow .25s ease; }
+.avengers-footer-member p { margin:0; font-size:8px; line-height:1.25; opacity:.65; }
+.avengers-footer-member:hover span { transform:translateY(-3px) scale(1.08); box-shadow:0 6px 16px rgba(200,154,60,.25); }
+.avengers-footer-count { margin-top:12px; font-size:10px; opacity:.55; }
+@media (max-width:980px) { .avengers-footer-team { min-width:300px; } }
+@media (max-width:760px) { .avengers-footer-team { min-width:100%; } .avengers-footer-members { grid-template-columns:repeat(4,1fr); max-width:300px; } }
